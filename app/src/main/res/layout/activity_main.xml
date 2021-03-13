@@ -8,22 +8,23 @@
         <variable
             name="test"
             type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"
-        android:background="#ffffff">
+        android:background="#ffffff"
+        tools:context=".MainActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="150dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/txt_parent_id"
@@ -32,9 +33,9 @@
                 android:text="부모 아이디 : "
                 android:textColor="#000000"
                 android:textSize="20sp"
-                app:layout_constraintTop_toTopOf="@id/edt_parent_id"
                 app:layout_constraintBottom_toBottomOf="@id/edt_parent_id"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/edt_parent_id" />
 
             <EditText
                 android:id="@+id/edt_parent_id"
@@ -45,10 +46,42 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/txt_parent_id"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_top2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/constraint_top">
+
+            <TextView
+                android:id="@+id/txt_child_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="아이 이름 : "
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@id/edt_child_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/edt_child_name" />
+
+            <EditText
+                android:id="@+id/edt_child_name"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/txt_child_name"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <Button
@@ -59,7 +92,7 @@
             android:text="push"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/constraint_top"/>
+            app:layout_constraintTop_toBottomOf="@id/constraint_top2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_middle"
@@ -68,18 +101,18 @@
             android:layout_marginTop="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_push" >
+            app:layout_constraintTop_toBottomOf="@id/btn_push">
 
             <TextView
                 android:id="@+id/txt_get_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="값 가져올 아이디 : "
+                android:text="값 가져올 부모 : "
                 android:textColor="#000000"
                 android:textSize="20sp"
-                app:layout_constraintTop_toTopOf="@id/edt_get_id"
                 app:layout_constraintBottom_toBottomOf="@id/edt_get_id"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/edt_get_id" />
 
             <EditText
                 android:id="@+id/edt_get_id"
@@ -90,7 +123,40 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/txt_get_id"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_middle2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/constraint_middle">
+
+            <TextView
+                android:id="@+id/txt_get_child_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="값 가져올 아이 이 : "
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@id/edt_get_child_num"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/edt_get_child_num" />
+
+            <EditText
+                android:id="@+id/edt_get_child_num"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/txt_get_child_num"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -103,7 +169,7 @@
             android:text="get"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/constraint_middle" />
+            app:layout_constraintTop_toBottomOf="@id/constraint_middle2" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_bottom"
@@ -112,7 +178,7 @@
             android:layout_marginTop="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_get" >
+            app:layout_constraintTop_toBottomOf="@id/btn_get">
 
             <TextView
                 android:id="@+id/txt_value"
@@ -121,17 +187,18 @@
                 android:text="가져온 값 : "
                 android:textColor="#000000"
                 android:textSize="20sp"
-                app:layout_constraintTop_toTopOf="@id/txt_get_value"
                 app:layout_constraintBottom_toBottomOf="@id/txt_get_value"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/txt_get_value" />
 
             <TextView
                 android:id="@+id/txt_get_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="3"
                 android:text="@{test}"
-                android:textSize="20sp"
                 android:textColor="#000000"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/txt_value"
                 app:layout_constraintTop_toTopOf="parent" />
