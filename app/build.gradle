@@ -54,6 +54,12 @@ dependencies {
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:26.5.0')
+    //Firebase
+    implementation 'com.google.firebase:firebase-database:19.7.0'
+    implementation 'com.google.firebase:firebase-auth:20.0.3'
+
+    //FirebaseStorage
+    implementation 'com.google.firebase:firebase-storage:19.2.2'
 
     //데이터바인딩
     kapt 'com.android.databinding:compiler:6.5'
