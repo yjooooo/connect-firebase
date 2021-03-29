@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mediaRecorder: MediaRecorder
     private var state: Boolean = false
     private lateinit var fileName: String
+    private lateinit var audioUri: Uri
 
     //데이터베이스의 인스턴스를 가져온다고 생각(즉, Root를 가져온다고 이해하면 쉬움)
     private val databaseReference: DatabaseReference = database.reference
@@ -119,7 +120,7 @@ class MainActivity : AppCompatActivity() {
         values.put(MediaStore.Audio.Media.DATA, fileName)
         values.put(MediaStore.Audio.Media.RELATIVE_PATH, "Music/Recordings/");
 
-        val audioUri = contentResolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values)
+        audioUri = contentResolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values)!!
         val file = audioUri?.let { getContentResolver().openFileDescriptor(it, "w") };
 
         mediaRecorder = MediaRecorder()
@@ -149,7 +150,7 @@ class MainActivity : AppCompatActivity() {
             mediaRecorder?.release()
             state = false
             Toast.makeText(this, "중지 되었습니다.", Toast.LENGTH_SHORT).show()
-
+            uploadAudioUri(audioUri)
         } else {
             Toast.makeText(this, "레코딩 상태가 아닙니다.", Toast.LENGTH_SHORT).show()
         }
