@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
@@ -23,7 +22,6 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModels()
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
@@ -33,10 +31,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fileName: String
     private lateinit var audioUri: Uri
 
-    //데이터베이스의 인스턴스를 가져온다고 생각(즉, Root를 가져온다고 이해하면 쉬움)
+    // 데이터베이스의 인스턴스를 가져온다고 생각(즉, Root를 가져온다고 이해하면 쉬움)
     private val databaseReference: DatabaseReference = database.reference
 
-    //private val myRef: DatabaseReference = database.getReference("parentId")
+    // private val myRef: DatabaseReference = database.getReference("parentId")
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         setOnBtnImgUploadClick()
         setOnBtnAudioUploadClick()
         setOnBtnRecordClick()
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -85,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                //Permission is not granted
+                // Permission is not granted
                 val permissions = arrayOf(
                     android.Manifest.permission.RECORD_AUDIO,
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -106,10 +103,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     @Suppress("DEPRECATION")
     private fun startRecording() {
-        //config and create MediaRecorder Object
+        // config and create MediaRecorder Object
         val values = ContentValues(10)
         values.put(MediaStore.MediaColumns.TITLE, "Recorded")
         values.put(MediaStore.Audio.Media.DISPLAY_NAME, fileName)
@@ -118,10 +114,10 @@ class MainActivity : AppCompatActivity() {
         values.put(MediaStore.MediaColumns.DATE_ADDED, System.currentTimeMillis() / 1000)
         values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/mp4")
         values.put(MediaStore.Audio.Media.DATA, fileName)
-        values.put(MediaStore.Audio.Media.RELATIVE_PATH, "Music/Recordings/");
+        values.put(MediaStore.Audio.Media.RELATIVE_PATH, "Music/Recordings/")
 
         audioUri = contentResolver.insert(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, values)!!
-        val file = audioUri?.let { getContentResolver().openFileDescriptor(it, "w") };
+        val file = audioUri?.let { getContentResolver().openFileDescriptor(it, "w") }
 
         mediaRecorder = MediaRecorder()
         mediaRecorder?.setAudioSource((MediaRecorder.AudioSource.MIC))
@@ -173,7 +169,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun uploadImgUri(file: Uri) {
-        //val file = Uri.fromFile(file)
+        // val file = Uri.fromFile(file)
         firebaseStorage.reference.child("imageFile").child("imageUri.png")
             .putFile(file).addOnCompleteListener {
                 if (it.isSuccessful) {
@@ -183,7 +179,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun uploadAudioUri(file: Uri) {
-        //val file = Uri.fromFile(file)
+        // val file = Uri.fromFile(file)
         firebaseStorage.reference.child("audioFile").child(fileName + ".mp4")
             .putFile(file).addOnCompleteListener {
                 if (it.isSuccessful) {
@@ -208,7 +204,7 @@ class MainActivity : AppCompatActivity() {
         lateinit var getId: String
         binding.btnGet.setOnClickListener {
             getId = binding.edtGetId.text.toString()
-            //val myRef: DatabaseReference = database.getReference(parentId)
+            // val myRef: DatabaseReference = database.getReference(parentId)
             val myValue: DatabaseReference = databaseReference.child(getId)
                 .child(getId + "의 child ${binding.edtGetChildNum.text}")
             myValue.addValueEventListener(object : ValueEventListener {
@@ -223,7 +219,6 @@ class MainActivity : AppCompatActivity() {
                 override fun onCancelled(error: DatabaseError) {
                     TODO("Not yet implemented")
                 }
-
             })
         }
 //        val myValue: DatabaseReference = databaseReference.child("heoji")
@@ -243,5 +238,4 @@ class MainActivity : AppCompatActivity() {
 //
 //        })
     }
-
 }
