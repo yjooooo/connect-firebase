@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
@@ -18,6 +19,8 @@ import androidx.databinding.DataBindingUtil
 import com.example.testknockknock.databinding.ActivityMainBinding
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,9 +29,11 @@ class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModels()
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
+    private lateinit var pathReference: StorageReference
     private lateinit var mediaRecorder: MediaRecorder
     private var state: Boolean = false
     private lateinit var fileName: String
+    private lateinit var filePath: String
     private lateinit var audioUri: Uri
 
     // 데이터베이스의 인스턴스를 가져온다고 생각(즉, Root를 가져온다고 이해하면 쉬움)
@@ -46,6 +51,9 @@ class MainActivity : AppCompatActivity() {
         setOnBtnImgUploadClick()
         setOnBtnAudioUploadClick()
         setOnBtnRecordClick()
+        setOnGetAudioClick()
+        setFileName()
+        setFilePath()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -65,11 +73,46 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getToday() {
+    private fun setOnGetAudioClick() {
+        binding.btnGetAudio.setOnClickListener {
+            getDataFromStorage()
+        }
+    }
+
+    private fun getDataFromStorage() {
+        pathReference = firebaseStorage.reference.child(filePath).child("$fileName.mp4")
+
+        // createTempFile : 임시파일 생성 (so, 사용이 끝나면 삭제해줘야함.)
+        // deleteOnExit을 사용해서 파일 삭제 -> 특징 : 파일을 바로 삭제하는 것이 아니라, JVM이 종료될 때 자동으로 저장된 파일을 삭제함.
+        val localFile = File.createTempFile("temp_download", "mp4")
+        localFile.deleteOnExit()
+
+        pathReference.getFile(localFile).addOnSuccessListener {
+            // Local temp file has been created
+            val player = MediaPlayer()
+            player.setDataSource(localFile.path)
+            player.prepare()
+            player.start()
+            Log.d("getAudio", "success")
+        }.addOnFailureListener {
+            // Handle any errors
+            Log.d("getAudio", "fail")
+        }
+    }
+
+    private fun getToday(): String {
         val currentTime: Date = Calendar.getInstance().getTime()
         val simpleDate = SimpleDateFormat("yyyy-MM-dd")
         val date = simpleDate.format(currentTime)
-        fileName = date.toString()
+        return date.toString()
+    }
+
+    private fun setFileName() {
+        fileName = getToday()
+    }
+
+    private fun setFilePath() {
+        filePath = getToday()
     }
 
     private fun setOnBtnRecordClick() {
@@ -180,7 +223,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun uploadAudioUri(file: Uri) {
         // val file = Uri.fromFile(file)
-        firebaseStorage.reference.child("audioFile").child(fileName + ".mp4")
+        firebaseStorage.reference.child(filePath).child(fileName + ".mp4")
             .putFile(file).addOnCompleteListener {
                 if (it.isSuccessful) {
                     Log.d("storage", "upload success")
