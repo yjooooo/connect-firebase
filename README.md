@@ -45,3 +45,83 @@
 
 
 
+
+# 💾 How to use the <u>Firebase Storage</u> in an Android project.
+
+## 📍Upload File (using URI)
+
+### 🍀Step 1. Add Cloud Storage SDK
+
+```groovy
+dependencies {
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:26.7.0')
+
+    // Declare the dependency for the Cloud Storage library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-storage-ktx'
+}
+```
+
+### 🍀Step 2. Get FirebaseStorage Instance 
+
+```kotlin
+private var firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
+```
+
+### 🍀Step 2. Upload File Using Uri
+
+- 1st child : the folder under storage
+- 2nd child : the file under 1st child folder
+
+```kotlin
+private fun uploadAudioUri(file: Uri) {
+    firebaseStorage.reference.child(filePath).child(fileName + ".mp4")
+        .putFile(file).addOnCompleteListener {
+            if (it.isSuccessful) {
+                Log.d("storage", "upload success")
+            }
+        }
+}
+```
+
+### 🍀Step 2-1. Then How to Get Uri From File?
+
+- Use startActivityForResult() and onActivityResult()
+- I upload the file that selected from MediaStore. So, put the uri of the file I selected in Intent.
+
+```kotlin
+private fun setOnBtnAudioUploadClick() {
+    binding.btnAudioUpload.setOnClickListener {
+        val audioIntent =
+            Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(audioIntent, 2)
+    }
+}
+```
+
+## 📍Download File 
+
+### 🍀Step 1. Get Firebase StorageReference
+
+```kotlin
+pathReference = firebaseStorage.reference.child(filePath).child("$fileName.mp4")
+```
+
+### 🍀Step 2. Create A Temporary File And Download File There
+
+- Since the temporary file was created, it should be deleted after use.
+- Delete files using deleteOnExit()
+  -  Automatically delete saved files when JVM terminates, rather than deleting files immediately.
+
+```kotlin
+val localFile = File.createTempFile("temp_download", "mp4")
+localFile.deleteOnExit()
+
+pathReference.getFile(localFile).addOnSuccessListener {
+            // Local temp file has been created
+        }.addOnFailureListener {
+            // Handle any errors
+        }
+```
+
