@@ -23,10 +23,6 @@
 
 
 
-
-
-
-
 ### 🍀Step 3. Add Internet Permission to AndroidMenifest.xml
 
 <div>
@@ -63,13 +59,17 @@ dependencies {
 }
 ```
 
+
+
 ### 🍀Step 2. Get FirebaseStorage Instance 
 
 ```kotlin
 private var firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
 ```
 
-### 🍀Step 2. Upload File Using Uri
+
+
+### 🍀Step 3. Upload File Using Uri
 
 - 1st child : the folder under storage
 - 2nd child : the file under 1st child folder
@@ -85,7 +85,9 @@ private fun uploadAudioUri(file: Uri) {
 }
 ```
 
-### 🍀Step 2-1. Then How to Get Uri From File?
+
+
+### 🍀Step 3-1. Then How to Get Uri From File?
 
 - Use startActivityForResult() and onActivityResult()
 - I upload the file that selected from MediaStore. So, put the uri of the file I selected in Intent.
@@ -100,6 +102,8 @@ private fun setOnBtnAudioUploadClick() {
 }
 ```
 
+
+
 ## 📍Download File 
 
 ### 🍀Step 1. Get Firebase StorageReference
@@ -107,6 +111,8 @@ private fun setOnBtnAudioUploadClick() {
 ```kotlin
 pathReference = firebaseStorage.reference.child(filePath).child("$fileName.mp4")
 ```
+
+
 
 ### 🍀Step 2. Create A Temporary File And Download File There
 
